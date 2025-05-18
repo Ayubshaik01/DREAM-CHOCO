@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dream Chocolates | Sign In</title>
+    <title>Dream Chocolates | Sign Up</title>
     <link rel="icon" type="image/jpeg" href="icon.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -27,6 +27,16 @@
             justify-content: center;
             align-items: center;
             transition: var(--transition);
+        }
+
+        /* Canvas for Three.js Animation */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Behind content */
         }
 
         .auth-container {
@@ -171,6 +181,13 @@
             transform: translateX(30px);
         }
 
+        .error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 10px;
+            display: none;
+        }
+
         footer {
             position: fixed;
             bottom: 15px;
@@ -199,40 +216,52 @@
     </style>
 </head>
 <body>
+    <!-- Three.js Canvas for Chocolate Animation -->
+    <div id="canvas-container"></div>
+
     <div class="theme-slider" onclick="toggleTheme()">
         <div class="slider-knob"></div>
     </div>
 
     <div class="auth-container">
-        <h1>Sign In</h1>
+        <h1>Sign Up</h1>
+        <div class="form-group">
+            <i class="fas fa-user"></i>
+            <input type="text" id="username" placeholder="Username">
+        </div>
         <div class="form-group">
             <i class="fas fa-envelope"></i>
-            <input type="text" id="email" placeholder="Email or Phone">
+            <input type="email" id="email" placeholder="Email">
         </div>
         <div class="form-group">
             <i class="fas fa-lock"></i>
             <input type="password" id="password" placeholder="Password">
         </div>
-        <button class="auth-btn" onclick="signIn()">Sign In</button>
-        <a href="#" class="toggle-link" onclick="forgotPassword()">Forgot Password?</a>
+        <button class="auth-btn" onclick="signUp()">Sign Up</button>
         <button class="social-btn google-btn" onclick="googleSignIn()">
-            <i class="fab fa-google"></i> Google
+            <i class="fab fa-google"></i> Sign Up with Google
         </button>
         <button class="social-btn twitter-btn" onclick="twitterSignIn()">
-            <i class="fab fa-twitter"></i> Twitter
+            <i class="fab fa-twitter"></i> Sign Up with Twitter
         </button>
         <button class="social-btn facebook-btn" onclick="facebookSignIn()">
-            <i class="fab fa-facebook-f"></i> Facebook
+            <i class="fab fa-facebook-f"></i> Sign Up with Facebook
         </button>
-        <a href="signup.html" class="toggle-link">Create an Account</a>
+        <a href="index.html" class="toggle-link">Already have an account? Sign In</a>
+        <div id="error-message" class="error"></div>
     </div>
 
     <footer>Made with ❤️ by the Dream Team</footer>
 
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
 
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+
     <script>
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyB2WLz-OT-oqaY1-e4Kz-2YxqhtKIrfxcM",
             authDomain: "dream-chocolates.firebaseapp.com",
@@ -244,66 +273,120 @@
         };
 
         // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = app.auth();
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Three.js Chocolate Animation
+        function initThreeJS() {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            // Create a chocolate-like sphere
+            const geometry = new THREE.SphereGeometry(1, 32, 32);
+            const material = new THREE.MeshPhongMaterial({ color: 0x6b4e31, shininess: 100 }); // Brown
+            const chocolate = new THREE.Mesh(geometry, material);
+            scene.add(chocolate);
+
+            // Add lighting
+            const light = new THREE.PointLight(0xffffff, 1, 100);
+            light.position.set(5, 5, 5);
+            scene.add(light);
+            const ambientLight = new THREE.AmbientLight(0x404040); // Soft light
+            scene.add(ambientLight);
+
+            camera.position.z = 5;
+
+            // Animation
+            function animate() {
+                requestAnimationFrame(animate);
+                chocolate.rotation.x += 0.01;
+                chocolate.rotation.y += 0.01;
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // Resize handler
+            window.addEventListener('resize', () => {
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+            });
+        }
+
+        // Display Error Messages
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000); // Hide after 5 seconds
+        }
 
         // Authentication Functions
-        function signIn() {
+        function signUp() {
+            const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            if (!email || !password) {
-                alert('Please enter both email and password');
+            if (!username || !email || !password) {
+                showError('Please fill in all fields');
                 return;
             }
-            auth.signInWithEmailAndPassword(email, password)
+            auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    alert('Sign In Successful!');
+                    const user = userCredential.user;
+                    return user.updateProfile({ displayName: username });
+                })
+                .then(() => {
+                    console.log('Sign Up Successful:', auth.currentUser);
                     transitionTo('home.html');
                 })
                 .catch((error) => {
-                    alert('Sign In Failed: ' + error.message);
+                    console.error('Sign Up Failed:', error);
+                    showError(error.message);
                 });
-        }
-
-        function forgotPassword() {
-            const email = document.getElementById('email').value;
-            if (!email) {
-                alert('Please enter your email first');
-                return;
-            }
-            auth.sendPasswordResetEmail(email)
-                .then(() => alert('Password reset email sent!'))
-                .catch((error) => alert('Error: ' + error.message));
         }
 
         function googleSignIn() {
             const provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider)
                 .then((result) => {
-                    alert('Sign In Successful with Google!');
+                    console.log('Sign Up Successful with Google:', result.user);
                     transitionTo('home.html');
                 })
-                .catch((error) => alert('Google Sign In Failed: ' + error.message));
+                .catch((error) => {
+                    console.error('Google Sign Up Failed:', error);
+                    showError(error.message);
+                });
         }
 
         function twitterSignIn() {
             const provider = new firebase.auth.TwitterAuthProvider();
             auth.signInWithPopup(provider)
                 .then((result) => {
-                    alert('Sign In Successful with Twitter!');
+                    console.log('Sign Up Successful with Twitter:', result.user);
                     transitionTo('home.html');
                 })
-                .catch((error) => alert('Twitter Sign In Failed: ' + error.message));
+                .catch((error) => {
+                    console.error('Twitter Sign Up Failed:', error);
+                    showError(error.message);
+                });
         }
 
         function facebookSignIn() {
             const provider = new firebase.auth.FacebookAuthProvider();
             auth.signInWithPopup(provider)
                 .then((result) => {
-                    alert('Sign In Successful with Facebook!');
+                    console.log('Sign Up Successful with Facebook:', result.user);
                     transitionTo('home.html');
                 })
-                .catch((error) => alert('Facebook Sign In Failed: ' + error.message));
+                .catch((error) => {
+                    console.error('Facebook Sign Up Failed:', error);
+                    showError(error.message);
+                });
         }
 
         function transitionTo(url) {
@@ -316,6 +399,19 @@
             slider.classList.toggle('active');
             document.body.classList.toggle('dark-theme');
         }
+
+        // Monitor Auth State
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('User is signed in:', user);
+                transitionTo('home.html');
+            } else {
+                console.log('No user is signed in.');
+            }
+        });
+
+        // Start Three.js
+        initThreeJS();
     </script>
 </body>
 </html>
