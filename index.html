@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     body { 
-      background-color: #FFF8F0; /* Ivory white */
+      background-color: #FFF8F0;
       overflow-x: hidden;
       scroll-behavior: smooth;
     }
@@ -20,7 +20,7 @@
     .brown { color: #4B2E2A; }
     .golden { color: #D4A017; }
     .navbar-bg, .subnav-bg, .sidebar {
-      background: rgba(255, 248, 240, 0.95); /* Unified background color with transparency */
+      background: rgba(255, 248, 240, 0.95);
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       backdrop-filter: blur(10px);
       transition: all 0.5s ease;
@@ -31,6 +31,7 @@
     }
     .font-playfair { font-family: 'Playfair Display', serif; }
     .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    .font-poppins { font-family: 'Poppins', sans-serif; }
     .nav-item {
       transition: color 0.5s ease, transform 0.5s ease, text-shadow 0.5s ease;
     }
@@ -116,16 +117,50 @@
       transform: scale(1.3) rotate(15deg);
       color: #D4A017;
     }
+    .cart-icon-container {
+      position: relative;
+      display: inline-block;
+    }
+    .cart-icon {
+      font-size: 1.5rem;
+      transition: transform 0.5s ease, color 0.5s ease;
+    }
+    .cart-icon:hover {
+      transform: scale(1.3) rotate(10deg);
+      color: #D4A017;
+    }
+    .cart-count {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: #F9E4E8;
+      color: #1C2526;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: bold;
+      border: 1px solid #D4A017;
+    }
+    /* Hero Section Animations */
     .hero-bg {
       background-image: url('https://via.placeholder.com/1200x600?text=Chocolate+Hero+Image');
       background-size: cover;
       background-position: center;
-      background-attachment: fixed; /* Parallax effect */
+      background-attachment: fixed;
       box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.5);
       position: relative;
       overflow: hidden;
       height: 700px;
-      transition: background-position 0.5s ease;
+      animation: parallax 20s linear infinite;
+    }
+    @keyframes parallax {
+      0% { background-position: center top; }
+      50% { background-position: center bottom; }
+      100% { background-position: center top; }
     }
     .hero-bg::before {
       content: '';
@@ -146,12 +181,22 @@
       opacity: 0;
       animation: fadeInUp 1s ease forwards 0.5s;
     }
-    @keyframes fadeInUp {
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
+    .hero-title {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 4px solid #D4A017;
+      animation: typing 3s steps(30, end), blink-caret 0.75s step-end infinite;
     }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink-caret {
+      from, to { border-color: transparent; }
+      50% { border-color: #D4A017; }
+    }
+    /* Features Section Animations */
     .feature-card {
       transition: transform 0.5s ease, box-shadow 0.5s ease, background-color 0.5s ease, opacity 0.5s ease;
       padding: 1.5rem;
@@ -171,11 +216,39 @@
       background-color: #F9E4E8;
     }
     .feature-icon {
+      position: relative;
       transition: transform 0.5s ease, color 0.5s ease;
     }
-    .feature-icon:hover {
+    .feature-icon::after {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid #D4A017;
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .feature-card:hover .feature-icon {
       transform: scale(1.3) rotate(15deg);
       color: #D4A017;
+    }
+    .feature-card:hover .feature-icon::after {
+      opacity: 0.5;
+      transform: rotate(360deg);
+      animation: glow 2s infinite;
+    }
+    @keyframes glow {
+      0%, 100% { border-color: rgba(212, 160, 23, 0.5); }
+      50% { border-color: rgba(212, 160, 23, 1); }
+    }
+    @keyframes fadeInUp {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
     .banner {
       background: linear-gradient(90deg, #F9E4E8, #FFF8F0);
@@ -223,12 +296,12 @@
       }
     }
     .login-button {
-      background: #F9E4E8; /* Changed to baby-pink */
-      color: #1C2526; /* Charcoal-black text for contrast */
+      background: #F9E4E8;
+      color: #1C2526;
       transition: background 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
     }
     .login-button:hover {
-      background: #D4A017; /* Golden on hover */
+      background: #D4A017;
       transform: translateY(-3px) scale(1.05);
       box-shadow: 0 8px 20px rgba(212, 160, 23, 0.5);
     }
@@ -263,15 +336,200 @@
       100% { opacity: 0; }
     }
     .discover-button {
-      background: #F9E4E8; /* Changed to baby-pink */
-      color: #1C2526; /* Charcoal-black text for contrast */
+      background: #F9E4E8;
+      color: #1C2526;
       transition: all 0.5s ease;
     }
     .discover-button:hover {
-      background: #D4A017; /* Golden on hover */
+      background: #D4A017;
       transform: translateY(-8px) scale(1.05);
       box-shadow: 0 15px 25px rgba(212, 160, 23, 0.6);
     }
+    /* Exclusive Collections Section Animations */
+    .collection-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      transition: transform 0.7s ease, box-shadow 0.7s ease;
+      opacity: 0;
+      transform: translateY(30px);
+      background: linear-gradient(45deg, rgba(212, 160, 23, 0.1), transparent);
+    }
+    .collection-card:nth-child(1) { animation: fadeInUp 0.8s ease forwards 0.2s; }
+    .collection-card:nth-child(2) { animation: fadeInUp 0.8s ease forwards 0.4s; }
+    .collection-card:nth-child(3) { animation: fadeInUp 0.8s ease forwards 0.6s; }
+    .collection-card:nth-child(4) { animation: fadeInUp 0.8s ease forwards 0.8s; }
+    .collection-card:hover {
+      transform: translateY(-15px);
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
+    }
+    .collection-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(212, 160, 23, 0.3), transparent);
+      animation: shimmer 3s infinite;
+    }
+    @keyframes shimmer {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+    .collection-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      transition: transform 0.7s ease;
+    }
+    .collection-card:hover .collection-image {
+      transform: scale(1.1);
+    }
+    .collection-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7));
+      opacity: 0.8;
+      transition: opacity 0.7s ease;
+    }
+    .collection-card:hover .collection-overlay {
+      opacity: 1;
+    }
+    .collection-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      padding: 1.5rem;
+      color: #FFF8F0;
+      width: 100%;
+    }
+    .collection-title {
+      transition: color 0.5s ease, transform 0.5s ease;
+    }
+    .collection-card:hover .collection-title {
+      color: #D4A017;
+      transform: translateY(-5px);
+    }
+    .collection-description {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: all 0.5s ease;
+    }
+    .read-more {
+      color: #D4A017;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.5s ease;
+    }
+    .read-more::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #D4A017;
+      transition: width 0.5s ease;
+    }
+    .read-more:hover {
+      color: #FFF8F0;
+    }
+    .read-more:hover::after {
+      width: 100%;
+    }
+    .collection-button {
+      background: #F9E4E8;
+      color: #1C2526;
+      transition: background 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    .collection-button:hover {
+      background: #D4A017;
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 10px 20px rgba(212, 160, 23, 0.5);
+    }
+    /* Feedback Section */
+    .feedback-section {
+      background: linear-gradient(180deg, #FFF8F0, #F9E4E8);
+      position: relative;
+      overflow: hidden;
+      padding: 4rem 0;
+    }
+    .feedback-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(212, 160, 23, 0.1), transparent);
+      opacity: 0.5;
+    }
+    .feedback-container {
+      display: flex;
+      animation: scrollLeft 30s linear infinite;
+      width: max-content;
+    }
+    @keyframes scrollLeft {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .feedback-container:hover {
+      animation-play-state: paused;
+    }
+    .feedback-card {
+      background: rgba(255, 248, 240, 0.6);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(212, 160, 23, 0.3);
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin: 0 1rem;
+      width: 300px;
+      flex-shrink: 0;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    .feedback-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(212, 160, 23, 0.5);
+      border: 1px solid rgba(212, 160, 23, 0.8);
+    }
+    .feedback-profile-pic {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 2px solid #D4A017;
+      margin-bottom: 1rem;
+      transition: transform 0.5s ease;
+    }
+    .feedback-card:hover .feedback-profile-pic {
+      transform: rotate(360deg);
+    }
+    .feedback-stars i {
+      transition: color 0.5s ease, transform 0.5s ease;
+    }
+    .feedback-card:hover .feedback-stars i {
+      color: #D4A017;
+      transform: scale(1.2);
+    }
+    .feedback-text {
+      transition: color 0.5s ease;
+    }
+    .feedback-card:hover .feedback-text {
+      color: #4B2E2A;
+    }
+    .feedback-author {
+      transition: color 0.5s ease, transform 0.5s ease;
+    }
+    .feedback-card:hover .feedback-author {
+      color: #D4A017;
+      transform: translateX(5px);
+    }
+    /* Footer Animations */
     .footer-bg {
       background: linear-gradient(180deg, #1C2526, #4B2E2A);
       color: #FFF8F0;
@@ -293,21 +551,64 @@
       opacity: 1;
     }
     .footer-link {
-      transition: color 0.5s ease, transform 0.5s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.8s ease forwards;
     }
+    .footer-link:nth-child(1) { animation-delay: 0.2s; }
+    .footer-link:nth-child(2) { animation-delay: 0.4s; }
+    .footer-link:nth-child(3) { animation-delay: 0.6s; }
+    .footer-link:nth-child(4) { animation-delay: 0.8s; }
     .footer-link:hover {
       color: #D4A017;
       transform: translateY(-3px);
     }
     .social-icon {
       transition: transform 0.5s ease, color 0.5s ease;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
     }
     .social-icon:hover {
       transform: scale(1.3) rotate(10deg);
       color: #D4A017;
     }
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .search-bar {
+        max-width: 200px;
+      }
+      .brand-name {
+        font-size: 1.5rem;
+      }
+      .collection-card {
+        height: auto;
+      }
+      .collection-image {
+        height: 200px;
+      }
+      .feedback-card {
+        width: 250px;
+      }
+    }
+    @media (max-width: 640px) {
+      .search-bar {
+        max-width: 150px;
+      }
+      .brand-name {
+        font-size: 1.25rem;
+      }
+      .collection-image {
+        height: 150px;
+      }
+      .feedback-card {
+        width: 200px;
+      }
+    }
   </style>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;600&family=Poppins:wght@700&display=swap" rel="stylesheet">
 </head>
 <body class="font-montserrat text-charcoal-black">
   <!-- Login Modal -->
@@ -316,10 +617,10 @@
       <button id="closeLoginModal" class="absolute top-3 right-3 text-2xl close-button"><i class="fas fa-times"></i></button>
       <h3 class="text-2xl font-playfair text-charcoal-black mb-4 text-center">Welcome to Dream Chocolates</h3>
       <div class="flex justify-center space-x-4 mb-4">
-        <button id="googleLogin" class="bg-charcoal-black text-ivory-white px-4 py-2 rounded-full login-button flex items-center">
+        <button id="googleLogin" class="px-4 py-2 rounded-full login-button flex items-center">
           <i class="fab fa-google mr-2"></i> Google
         </button>
-        <button id="facebookLogin" class="bg-charcoal-black text-ivory-white px-4 py-2 rounded-full login-button flex items-center">
+        <button id="facebookLogin" class="px-4 py-2 rounded-full login-button flex items-center">
           <i class="fab fa-facebook mr-2"></i> Facebook
         </button>
       </div>
@@ -330,8 +631,8 @@
         <input type="email" id="email" placeholder="Email" class="input-field bg-ivory-white text-charcoal-black px-4 py-2 rounded-full mb-2 w-full border border-charcoal-black">
         <input type="password" id="password" placeholder="Password" class="input-field bg-ivory-white text-charcoal-black px-4 py-2 rounded-full mb-2 w-full border border-charcoal-black">
         <div class="flex justify-between space-x-2">
-          <button id="signUp" class="bg-charcoal-black text-ivory-white px-4 py-2 rounded-full login-button w-full">Sign Up</button>
-          <button id="signIn" class="bg-charcoal-black text-ivory-white px-4 py-2 rounded-full login-button w-full">Sign In</button>
+          <button id="signUp" class="px-4 py-2 rounded-full login-button w-full">Sign Up</button>
+          <button id="signIn" class="px-4 py-2 rounded-full login-button w-full">Sign In</button>
         </div>
         <button id="resetPassword" class="mt-2 text-brown hover:text-golden underline text-sm w-full text-center">Forgot Password? Reset</button>
         <p id="successMessage" class="success-message hidden">Sign In Successful</p>
@@ -340,22 +641,22 @@
   </div>
 
   <!-- Main Navbar -->
-  <nav class="navbar-bg text-ivory-white p-4 sticky top-0 z-10">
+  <nav class="navbar-bg text-ivory-white p-3 sticky top-0 z-20">
     <div class="container mx-auto flex items-center justify-between">
-      <!-- Left: Brand Name -->
-      <div class="flex items-center space-x-4">
-        <button id="sidebarToggle" class="md:hidden text-2xl nav-icon"><i class="fas fa-bars"></i></button>
-        <h1 class="text-3xl font-bold font-playfair brand-name">Dream Chocolates</h1>
+      <div class="flex items-center space-x-3">
+        <button id="sidebarToggle" class="md:hidden text-xl nav-icon"><i class="fas fa-bars"></i></button>
+        <h1 class="text-2xl font-bold font-poppins brand-name">Dream Chocolates</h1>
       </div>
-
-      <!-- Center: Search Bar -->
-      <div class="flex items-center bg-ivory-white rounded-full px-3 py-2 search-bar max-w-md w-full">
-        <input type="text" id="searchBar" placeholder="Search products..." class="bg-transparent text-charcoal-black outline-none w-full text-base">
-        <i class="fas fa-search text-charcoal-black nav-icon text-base"></i>
+      <div class="flex items-center bg-ivory-white rounded-full px-2 py-1 search-bar max-w-md w-full">
+        <input type="text" id="searchBar" placeholder="Search products..." class="bg-transparent text-charcoal-black outline-none w-full text-sm">
+        <i class="fas fa-search text-charcoal-black nav-icon text-sm"></i>
       </div>
-
-      <!-- Right: Empty for now -->
-      <div class="w-24"></div>
+      <div class="cart-icon-container">
+        <a href="/cart" class="cart-icon text-charcoal-black">
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+        <span id="cartCount" class="cart-count">0</span>
+      </div>
     </div>
   </nav>
 
@@ -366,10 +667,6 @@
         <li><a href="#" class="nav-item text-base">About</a></li>
         <li><a href="#" class="nav-item text-base">My Account</a></li>
         <li><a href="#" class="nav-item text-base">Blogs</a></li>
-        <li><a href="#" class="nav-item text-base relative">
-          Cart
-          <span id="cartCount" class="absolute -top-2 -right-2 bg-baby-pink text-charcoal-black rounded-full w-5 h-5 flex items-center justify-center text-xs">0</span>
-        </a></li>
         <li><a href="#" id="loginLink" class="nav-item text-base">Login</a></li>
         <li><a href="#" id="signOutLink" class="nav-item text-base hidden">Sign Out</a></li>
       </ul>
@@ -388,10 +685,6 @@
       <li><a href="#" class="nav-item text-xl">About</a></li>
       <li><a href="#" class="nav-item text-xl">My Account</a></li>
       <li><a href="#" class="nav-item text-xl">Blogs</a></li>
-      <li><a href="#" class="nav-item text-xl relative">
-        Cart
-        <span id="sidebarCartCount" class="absolute -top-2 -right-2 bg-baby-pink text-charcoal-black rounded-full w-6 h-6 flex items-center justify-center text-sm">0</span>
-      </a></li>
       <li><a href="#" id="sidebarLoginLink" class="nav-item text-xl">Login</a></li>
       <li><a href="#" id="sidebarSignOutLink" class="nav-item text-xl hidden">Sign Out</a></li>
       <li>
@@ -412,9 +705,9 @@
   <!-- Hero Section -->
   <section class="hero-bg flex items-center justify-center relative">
     <div class="text-center hero-content">
-      <h2 class="text-6xl md:text-7xl font-playfair text-ivory-white mb-4 transition-all duration-700 hover:text-golden">A Taste of Heaven</h2>
+      <h2 class="text-6xl md:text-7xl font-playfair text-ivory-white mb-4 transition-all duration-700 hover:text-golden hero-title">A Taste of Heaven</h2>
       <p class="text-ivory-white mb-6 max-w-md mx-auto text-xl transition-all duration-500 hover:text-baby-pink">Savor the finest handcrafted chocolates, crafted with love and luxury.</p>
-      <a href="#shop" class="discover-button inline-block bg-charcoal-black text-ivory-white px-10 py-4 rounded-full font-montserrat text-lg">Discover Bliss</a>
+      <a href="#shop" class="discover-button inline-block px-10 py-4 rounded-full font-montserrat text-lg">Discover Bliss</a>
     </div>
   </section>
 
@@ -454,6 +747,319 @@
     </div>
   </section>
 
+  <!-- Exclusive Collections Section -->
+  <section class="py-16 bg-ivory-white">
+    <div class="container mx-auto text-center">
+      <h2 class="text-4xl font-playfair text-charcoal-black mb-12 transition-all duration-700 hover:text-golden">Exclusive Collections</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="collection-card">
+          <img src="https://via.placeholder.com/400x300?text=Truffle+Delights" alt="Truffle Delights" class="collection-image">
+          <div class="collection-overlay"></div>
+          <div class="collection-content">
+            <h3 class="collection-title text-2xl font-playfair mb-2">Truffle Delights</h3>
+            <p class="collection-description text-sm mb-3">Indulge in our rich, velvety truffles made with the finest cocoa. Each piece is a burst of flavor, crafted to melt in your mouth.</p>
+            <p class="collection-full-description hidden text-sm mb-3">Our Truffle Delights are sourced from premium cocoa beans, blended with creamy ganache, and dusted with a hint of sea salt for a perfect balance of sweet and savory. Perfect for gifting or savoring during a quiet evening.</p>
+            <span class="read-more text-sm underline">Read More</span>
+            <a href="/catalog/truffle-delights" class="collection-button block mt-3 px-4 py-2 rounded-full font-montserrat text-sm">Show Collection</a>
+          </div>
+        </div>
+        <div class="collection-card">
+          <img src="https://via.placeholder.com/400x300?text=Caramel+Dreams" alt="Caramel Dreams" class="collection-image">
+          <div class="collection-overlay"></div>
+          <div class="collection-content">
+            <h3 class="collection-title text-2xl font-playfair mb-2">Caramel Dreams</h3>
+            <p class="collection-description text-sm mb-3">Experience the gooey goodness of our caramel-filled chocolates, paired with a hint of sea salt for a heavenly treat.</p>
+            <p class="collection-full-description hidden text-sm mb-3">Caramel Dreams are crafted with a luscious caramel center, enrobed in smooth milk chocolate, and sprinkled with sea salt. Each bite offers a delightful contrast of textures and flavors, making it a favorite for caramel lovers.</p>
+            <span class="read-more text-sm underline">Read More</span>
+            <a href="/catalog/caramel-dreams" class="collection-button block mt-3 px-4 py-2 rounded-full font-montserrat text-sm">Show Collection</a>
+          </div>
+        </div>
+        <div class="collection-card">
+          <img src="https://via.placeholder.com/400x300?text=Nutty+Bliss" alt="Nutty Bliss" class="collection-image">
+          <div class="collection-overlay"></div>
+          <div class="collection-content">
+            <h3 class="collection-title text-2xl font-playfair mb-2">Nutty Bliss</h3>
+            <p class="collection-description text-sm mb-3">A perfect blend of crunchy nuts and creamy chocolate, offering a delightful texture in every bite.</p>
+            <p class="collection-full-description hidden text-sm mb-3">Nutty Bliss features a mix of roasted almonds, hazelnuts, and pecans, encased in our signature dark chocolate. This collection is a celebration of textures, ideal for those who love a nutty crunch with their chocolate.</p>
+            <span class="read-more text-sm underline">Read More</span>
+            <a href="/catalog/nutty-bliss" class="collection-button block mt-3 px-4 py-2 rounded-full font-montserrat text-sm">Show Collection</a>
+          </div>
+        </div>
+        <div class="collection-card">
+          <img src="https://via.placeholder.com/400x300?text=Fruit+Fusion" alt="Fruit Fusion" class="collection-image">
+          <div class="collection-overlay"></div>
+          <div class="collection-content">
+            <h3 class="collection-title text-2xl font-playfair mb-2">Fruit Fusion</h3>
+            <p class="collection-description text-sm mb-3">Taste the burst of fruity flavors combined with our silky chocolate, a refreshing twist to your chocolate experience.</p>
+            <p class="collection-full-description hidden text-sm mb-3">Fruit Fusion brings together dried raspberries, mangoes, and citrus zest, infused into our white and dark chocolate blends. This collection offers a vibrant and refreshing taste, perfect for those who enjoy a fruity twist.</p>
+            <span class="read-more text-sm underline">Read More</span>
+            <a href="/catalog/fruit-fusion" class="collection-button block mt-3 px-4 py-2 rounded-full font-montserrat text-sm">Show Collection</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feedback Section -->
+  <section class="feedback-section">
+    <div class="container mx-auto text-center">
+      <h2 class="text-4xl font-playfair text-charcoal-black mb-12 transition-all duration-700 hover:text-golden">What Our Customers Say</h2>
+      <div class="feedback-container">
+        <!-- Feedback 1 -->
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=A" alt="Aria L." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"These chocolates are a cosmic delight! The truffles transport me to another galaxy."</p>
+          <p class="feedback-author text-sm font-bold">- Aria L.</p>
+        </div>
+        <!-- Feedback 2 -->
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=N" alt="Noah K." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star-half-alt text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"Caramel Dreams are pure magic! It’s like tasting the future of chocolate."</p>
+          <p class="feedback-author text-sm font-bold">- Noah K.</p>
+        </div>
+        <!-- Feedback 3 -->
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=L" alt="Luna S." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"Gifted these to my friends, and they were over the moon! Stunning packaging."</p>
+          <p class="feedback-author text-sm font-bold">- Luna S.</p>
+        </div>
+        <!-- Feedback 4 -->
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=E" alt="Eli R." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star-half-alt text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"Nutty Bliss is a masterpiece! The crunch is out of this world."</p>
+          <p class="feedback-author text-sm font-bold">- Eli R.</p>
+        </div>
+        <!-- Feedback 5 -->
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=Z" alt="Zara M." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"Fruit Fusion feels like a burst of stardust! So refreshing and unique."</p>
+          <p class="feedback-author text-sm font-bold">- Zara M.</p>
+        </div>
+        <!-- Feedback 6 -->
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=C" alt="Cyrus T." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"These chocolates are a futuristic delight! Pure perfection."</p>
+          <p class="feedback-author text-sm font-bold">- Cyrus T.</p>
+        </div>
+        <!-- Feedback 7 -->
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=I" alt="Isla V." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star-half-alt text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"Fast delivery and the chocolates were a galactic hit at my event!"</p>
+          <p class="feedback-author text-sm font-bold">- Isla V.</p>
+        </div>
+        <!-- Feedback 8 -->
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=O" alt="Orion P." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"Truffle Delights are a celestial experience! So rich and creamy."</p>
+          <p class="feedback-author text-sm font-bold">- Orion P.</p>
+        </div>
+        <!-- Feedback 9 -->
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=N" alt="Nova J." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star-half-alt text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"The packaging is like a portal to luxury, and the chocolates are stellar!"</p>
+          <p class="feedback-author text-sm font-bold">- Nova J.</p>
+        </div>
+        <!-- Feedback 10 -->
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=K" alt="Kai W." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"A futuristic treat for chocolate lovers! Every piece is a journey."</p>
+          <p class="feedback-author text-sm font-bold">- Kai W.</p>
+        </div>
+        <!-- Duplicate cards for seamless looping -->
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=A" alt="Aria L." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"These chocolates are a cosmic delight! The truffles transport me to another galaxy."</p>
+          <p class="feedback-author text-sm font-bold">- Aria L.</p>
+        </div>
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=N" alt="Noah K." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star-half-alt text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"Caramel Dreams are pure magic! It’s like tasting the future of chocolate."</p>
+          <p class="feedback-author text-sm font-bold">- Noah K.</p>
+        </div>
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=L" alt="Luna S." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"Gifted these to my friends, and they were over the moon! Stunning packaging."</p>
+          <p class="feedback-author text-sm font-bold">- Luna S.</p>
+        </div>
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=E" alt="Eli R." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star-half-alt text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"Nutty Bliss is a masterpiece! The crunch is out of this world."</p>
+          <p class="feedback-author text-sm font-bold">- Eli R.</p>
+        </div>
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=Z" alt="Zara M." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"Fruit Fusion feels like a burst of stardust! So refreshing and unique."</p>
+          <p class="feedback-author text-sm font-bold">- Zara M.</p>
+        </div>
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=C" alt="Cyrus T." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"These chocolates are a futuristic delight! Pure perfection."</p>
+          <p class="feedback-author text-sm font-bold">- Cyrus T.</p>
+        </div>
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=I" alt="Isla V." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star-half-alt text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"Fast delivery and the chocolates were a galactic hit at my event!"</p>
+          <p class="feedback-author text-sm font-bold">- Isla V.</p>
+        </div>
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=O" alt="Orion P." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"Truffle Delights are a celestial experience! So rich and creamy."</p>
+          <p class="feedback-author text-sm font-bold">- Orion P.</p>
+        </div>
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=N" alt="Nova J." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star-half-alt text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"The packaging is like a portal to luxury, and the chocolates are stellar!"</p>
+          <p class="feedback-author text-sm font-bold">- Nova J.</p>
+        </div>
+        <div class="feedback-card">
+          <img src="https://via.placeholder.com/50?text=K" alt="Kai W." class="feedback-profile-pic mx-auto">
+          <div class="feedback-stars mb-2">
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+            <i class="fas fa-star text-yellow-500"></i>
+          </div>
+          <p class="feedback-text text-sm italic mb-2">"A futuristic treat for chocolate lovers! Every piece is a journey."</p>
+          <p class="feedback-author text-sm font-bold">- Kai W.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer Section -->
   <footer class="footer-bg py-12 text-center">
     <div class="container mx-auto">
@@ -476,9 +1082,7 @@
 
   <!-- Firebase and Functionality Scripts -->
   <script>
-    // Ensure Firebase scripts are loaded before running code
     document.addEventListener('DOMContentLoaded', () => {
-      // Firebase Configuration
       const firebaseConfig = {
         apiKey: "AIzaSyB2WLz-OT-oqaY1-e4Kz-2YxqhtKIrfxcM",
         authDomain: "dream-chocolates.firebaseapp.com",
@@ -489,19 +1093,16 @@
         measurementId: "G-L0MZDVJT2G"
       };
 
-      // Check if firebase is defined
       if (typeof firebase === 'undefined') {
         console.error('Firebase failed to load. Please check the Firebase CDN URLs or your network connection.');
         alert('Failed to load Firebase. Please check your network connection and try again.');
         return;
       }
 
-      // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       const auth = firebase.auth();
       const db = firebase.firestore();
 
-      // Sidebar Toggle
       const sidebar = document.getElementById('sidebar');
       const sidebarToggle = document.getElementById('sidebarToggle');
       const closeSidebar = document.getElementById('closeSidebar');
@@ -516,7 +1117,6 @@
         sidebar.classList.add('sidebar-hidden');
       });
 
-      // Login Modal
       const loginModal = document.getElementById('loginModal');
       const closeLoginModal = document.getElementById('closeLoginModal');
       const successMessage = document.getElementById('successMessage');
@@ -528,7 +1128,6 @@
         successMessage.classList.add('hidden');
       });
 
-      // Show success message and close modal
       const showSuccessAndCloseModal = () => {
         console.log('Showing success message and closing modal');
         successMessage.classList.remove('hidden');
@@ -538,10 +1137,9 @@
           loginModal.classList.remove('show');
           successMessage.classList.add('hidden');
           updateUIAfterLogin();
-        }, 2000); // Match the duration of the fadeInOut animation
+        }, 2000);
       };
 
-      // Update UI after login without refreshing
       const updateUIAfterLogin = () => {
         console.log('Updating UI after login');
         const user = auth.currentUser;
@@ -568,7 +1166,6 @@
           userName.classList.remove('hidden');
           sidebarUserName.classList.remove('hidden');
 
-          // Determine login method to decide profile picture display
           const providerData = user.providerData[0]?.providerId || '';
           if (providerData.includes('google') || providerData.includes('facebook')) {
             if (user.photoURL) {
@@ -585,7 +1182,6 @@
               sidebarDefaultProfileIcon.classList.remove('hidden');
             }
           } else {
-            // For manual sign-in (password provider)
             if (user.photoURL) {
               profilePic.src = user.photoURL;
               sidebarProfilePic.src = user.photoURL;
@@ -603,7 +1199,6 @@
         }
       };
 
-      // Firebase Authentication
       auth.onAuthStateChanged(user => {
         console.log('Auth state changed:', user ? 'User logged in' : 'No user');
         const profilePic = document.getElementById('profilePic');
@@ -631,7 +1226,6 @@
           userName.classList.remove('hidden');
           sidebarUserName.classList.remove('hidden');
 
-          // Determine login method to decide profile picture display
           const providerData = user.providerData[0]?.providerId || '';
           if (providerData.includes('google') || providerData.includes('facebook')) {
             if (user.photoURL) {
@@ -648,7 +1242,6 @@
               sidebarDefaultProfileIcon.classList.remove('hidden');
             }
           } else {
-            // For manual sign-in (password provider)
             if (user.photoURL) {
               profilePic.src = user.photoURL;
               sidebarProfilePic.src = user.photoURL;
@@ -679,7 +1272,6 @@
         }
       });
 
-      // Google Login with signInWithPopup
       document.getElementById('googleLogin').addEventListener('click', () => {
         console.log('Google login clicked');
         const provider = new firebase.auth.GoogleAuthProvider();
@@ -710,7 +1302,6 @@
           });
       });
 
-      // Facebook Login with signInWithPopup
       document.getElementById('facebookLogin').addEventListener('click', () => {
         console.log('Facebook login clicked');
         const provider = new firebase.auth.FacebookAuthProvider();
@@ -739,7 +1330,6 @@
           });
       });
 
-      // Sign Up
       document.getElementById('signUp').addEventListener('click', () => {
         console.log('Sign Up clicked');
         const email = document.getElementById('email').value;
@@ -758,7 +1348,6 @@
           });
       });
 
-      // Sign In
       document.getElementById('signIn').addEventListener('click', () => {
         console.log('Sign In clicked');
         const email = document.getElementById('email').value;
@@ -777,7 +1366,6 @@
           });
       });
 
-      // Reset Password
       document.getElementById('resetPassword').addEventListener('click', () => {
         console.log('Reset Password clicked');
         const email = document.getElementById('email').value;
@@ -798,7 +1386,6 @@
           });
       });
 
-      // Sign Out
       const signOut = () => {
         console.log('Sign Out clicked');
         auth.signOut()
@@ -815,7 +1402,6 @@
       document.getElementById('signOutLink').addEventListener('click', signOut);
       document.getElementById('sidebarSignOutLink').addEventListener('click', signOut);
 
-      // Search Functionality
       document.getElementById('searchBar').addEventListener('input', async (e) => {
         const query = e.target.value.trim().toLowerCase();
         if (query.length < 3) {
@@ -836,6 +1422,22 @@
             message: error.message
           });
         }
+      });
+
+      document.querySelectorAll('.read-more').forEach(button => {
+        button.addEventListener('click', () => {
+          const description = button.previousElementSibling;
+          const shortDescription = description.previousElementSibling;
+          if (description.classList.contains('hidden')) {
+            description.classList.remove('hidden');
+            shortDescription.classList.add('hidden');
+            button.textContent = 'Read Less';
+          } else {
+            description.classList.add('hidden');
+            shortDescription.classList.remove('hidden');
+            button.textContent = 'Read More';
+          }
+        });
       });
     });
   </script>
