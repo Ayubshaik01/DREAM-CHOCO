@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Dream Chocolates</title>
+  <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body { 
+      background-color: #FFF8F0;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    .charcoal-black { color: #1C2526; }
+    .baby-pink { background-color: #F9E4E8; }
+    .brown { color: #4B2E2A; }
+    .golden { color: #D4A017; }
+    .font-playfair { font-family: 'Playfair Display', serif; }
+    .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    .font-poppins { font-family: 'Poppins', sans-serif; }
+    .section-card {
+      background: rgba(255, 248, 240, 0.95);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    .section-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .icon-circle {
+      width: 60px;
+      height: 60px;
+      background: #F9E4E8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      transition: background 0.5s ease, transform 0.5s ease;
+    }
+    .icon-circle:hover {
+      background: #D4A017;
+      transform: scale(1.2) rotate(15deg);
+    }
+    .input-field {
+      transition: border-color 0.5s ease, box-shadow 0.5s ease, background-color 0.5s ease, transform 0.5s ease;
+    }
+    .input-field:focus {
+      border-color: #D4A017;
+      box-shadow: 0 0 15px rgba(212, 160, 23, 0.4);
+      background-color: #FFFFFF;
+      transform: scale(1.02);
+    }
+    .action-button {
+      background: #F9E4E8;
+      color: #1C2526;
+      transition: background 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    .action-button:hover {
+      background: #D4A017;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(212, 160, 23, 0.5);
+    }
+    .faq-item {
+      background: #FFF8F0;
+      border: 1px solid rgba(212, 160, 23, 0.3);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    .faq-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .success-message {
+      color: #D4A017;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 1rem;
+      opacity: 0;
+      animation: fadeInOut 2s ease forwards;
+    }
+    @keyframes fadeInOut {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    .brand-name {
+      position: relative;
+      display: inline-block;
+      transition: all 0.7s ease;
+    }
+    .brand-name:hover {
+      color: #D4A017;
+      transform: scale(1.15) rotate(3deg);
+      text-shadow: 0 0 20px rgba(212, 160, 23, 0.8), 0 0 30px rgba(212, 160, 23, 0.6);
+    }
+    .brand-name::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #D4A017;
+      transition: width 0.5s ease;
+    }
+    .brand-name:hover::after {
+      width: 100%;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;600&family=Poppins:wght@700&display=swap" rel="stylesheet">
+</head>
+<body class="font-montserrat text-charcoal-black">
+  <!-- Main Navbar -->
+  <nav class="bg-opacity-90 text-ivory-white p-3 sticky top-0 z-20" style="background: rgba(255, 248, 240, 0.95); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+    <div class="container mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <h1 class="text-2xl font-bold font-poppins brand-name"><a href="index.html">Dream Chocolates</a></h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="/cart" class="text-charcoal-black hover:text-golden">
+          <i class="fas fa-shopping-cart text-xl"></i>
+          <span id="cartCount" class="ml-1 text-sm font-bold">0</span>
+        </a>
+        <a href="index.html" class="text-charcoal-black hover:text-golden">Home</a>
+        <a href="about.html" class="text-charcoal-black hover:text-golden">About</a>
+        <a href="my-account.html" class="text-charcoal-black hover:text-golden">My Account</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contact Form Section -->
+  <section class="py-16 bg-ivory-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-playfair text-charcoal-black mb-12 text-center transition-all duration-700 hover:text-golden">Get in Touch</h2>
+      <div class="section-card max-w-2xl mx-auto">
+        <div class="mb-4">
+          <label class="block text-brown mb-1">Name</label>
+          <input type="text" id="contactName" placeholder="Your Name" class="input-field bg-ivory-white text-charcoal-black px-4 py-2 rounded-full w-full border border-charcoal-black">
+        </div>
+        <div class="mb-4">
+          <label class="block text-brown mb-1">Email</label>
+          <input type="email" id="contactEmail" placeholder="Your Email" class="input-field bg-ivory-white text-charcoal-black px-4 py-2 rounded-full w-full border border-charcoal-black">
+        </div>
+        <div class="mb-4">
+          <label class="block text-brown mb-1">Subject</label>
+          <input type="text" id="contactSubject" placeholder="Subject" class="input-field bg-ivory-white text-charcoal-black px-4 py-2 rounded-full w-full border border-charcoal-black">
+        </div>
+        <div class="mb-4">
+          <label class="block text-brown mb-1">Message</label>
+          <textarea id="contactMessage" placeholder="Your Message" rows="5" class="input-field bg-ivory-white text-charcoal-black px-4 py-2 rounded-lg w-full border border-charcoal-black"></textarea>
+        </div>
+        <button id="submitContact" class="action-button px-6 py-3 rounded-full w-full">Send Message</button>
+        <p id="successMessage" class="success-message hidden">Message Sent Successfully!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Information Section -->
+  <section class="py-16 bg-baby-pink">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-4xl font-playfair text-charcoal-black mb-12 transition-all duration-700 hover:text-golden">Contact Details</h2>
+      <div class="section-card">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <div class="text-center">
+            <div class="icon-circle">
+              <i class="fas fa-map-marker-alt text-2xl text-brown"></i>
+            </div>
+            <p class="text-charcoal-black">123 Sweet Lane, Bangalore, Karnataka, India</p>
+          </div>
+          <div class="text-center">
+            <div class="icon-circle">
+              <i class="fas fa-phone text-2xl text-brown"></i>
+            </div>
+            <p class="text-charcoal-black">+91 98765 43210</p>
+          </div>
+          <div class="text-center">
+            <div class="icon-circle">
+              <i class="fas fa-envelope text-2xl text-brown"></i>
+            </div>
+            <p class="text-charcoal-black">support@dreamchocolates.in</p>
+          </div>
+        </div>
+        <div class="flex justify-center space-x-6">
+          <a href="#" class="text-2xl hover:text-golden transition-all duration-300"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-2xl hover:text-golden transition-all duration-300"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-2xl hover:text-golden transition-all duration-300"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-2xl hover:text-golden transition-all duration-300"><i class="fab fa-pinterest"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <section class="py-16 bg-ivory-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-playfair text-charcoal-black mb-12 text-center transition-all duration-700 hover:text-golden">Find Us</h2>
+      <div class="section-card">
+        <div class="w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center">
+          <p class="text-charcoal-black">[Placeholder for Google Maps Embed - 123 Sweet Lane, Bangalore]</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16 bg-baby-pink">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-playfair text-charcoal-black mb-12 text-center transition-all duration-700 hover:text-golden">Frequently Asked Questions</h2>
+      <div class="section-card">
+        <div class="faq-item">
+          <h3 class="text-xl font-playfair text-brown mb-2">What are your shipping options?</h3>
+          <p class="text-charcoal-black">We offer free shipping on orders above 500 INR across India. Standard delivery takes 3-5 business days, and express shipping (1-2 days) is available for an additional fee.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="text-xl font-playfair text-brown mb-2">Can I customize my chocolate order?</h3>
+          <p class="text-charcoal-black">Yes! We offer customization for bulk orders and special occasions. Please reach out to us with your requirements, and we’ll create something special for you.</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="text-xl font-playfair text-brown mb-2">Do you ship internationally?</h3>
+          <p class="text-charcoal-black">Currently, we ship only within India. We’re working on expanding internationally, so stay tuned!</p>
+        </div>
+        <div class="faq-item">
+          <h3 class="text-xl font-playfair text-brown mb-2">What is your return policy?</h3>
+          <p class="text-charcoal-black">We offer a 100% satisfaction guarantee. If you’re not happy with your order, contact us within 7 days for a refund or replacement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="py-16 bg-ivory-white text-center">
+    <h2 class="text-4xl font-playfair text-charcoal-black mb-6 transition-all duration-700 hover:text-golden">Explore Our Collections</h2>
+    <p class="text-lg text-charcoal-black mb-8">Discover the magic of Dream Chocolates – handcrafted with love!</p>
+    <a href="/catalog" class="action-button px-6 py-3 rounded-full inline-block">Shop Now</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gradient-to-b from-charcoal-black to-brown py-12 text-center text-ivory-white">
+    <div class="container mx-auto">
+      <h3 class="text-3xl font-playfair mb-6">Dream Chocolates</h3>
+      <ul class="flex justify-center space-x-8 mb-6">
+        <li><a href="index.html" class="text-lg hover:text-golden transition-all duration-300">Home</a></li>
+        <li><a href="about.html" class="text-lg hover:text-golden transition-all duration-300">About</a></li>
+        <li><a href="contact.html" class="text-lg hover:text-golden transition-all duration-300">Contact</a></li>
+        <li><a href="/privacy" class="text-lg hover:text-golden transition-all duration-300">Privacy Policy</a></li>
+      </ul>
+      <div class="flex justify-center space-x-6 mb-6">
+        <a href="#" class="text-2xl hover:text-golden transition-all duration-300"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="text-2xl hover:text-golden transition-all duration-300"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="text-2xl hover:text-golden transition-all duration-300"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="text-2xl hover:text-golden transition-all duration-300"><i class="fab fa-pinterest"></i></a>
+      </div>
+      <p class="text-sm">© 2025 Dream Chocolates. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const firebaseConfig = {
+        apiKey: "AIzaSyB2WLz-OT-oqaY1-e4Kz-2YxqhtKIrfxcM",
+        authDomain: "dream-chocolates.firebaseapp.com",
+        projectId: "dream-chocolates",
+        storageBucket: "dream-chocolates.firebasestorage.app",
+        messagingSenderId: "617411233819",
+        appId: "1:617411233819:web:42f5749a653ff0b2f710be",
+        measurementId: "G-L0MZDVJT2G"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      // Load cart count from Firestore
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          const userRef = db.collection('users').doc(user.uid);
+          userRef.get().then(doc => {
+            if (doc.exists) {
+              const data = doc.data();
+              const cartItems = data.cartItems || [];
+              document.getElementById('cartCount').textContent = cartItems.length;
+            }
+          }).catch(error => {
+            console.error('Error fetching user data:', error);
+          });
+        }
+      });
+
+      // Handle Contact Form Submission
+      document.getElementById('submitContact').addEventListener('click', () => {
+        const name = document.getElementById('contactName').value.trim();
+        const email = document.getElementById('contactEmail').value.trim();
+        const subject = document.getElementById('contactSubject').value.trim();
+        const message = document.getElementById('contactMessage').value.trim();
+
+        if (!name || !email || !subject || !message) {
+          alert('Please fill in all fields.');
+          return;
+        }
+
+        const contactData = {
+          name,
+          email,
+          subject,
+          message,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        db.collection('contacts').add(contactData)
+          .then(() => {
+            document.getElementById('successMessage').classList.remove('hidden');
+            document.getElementById('contactName').value = '';
+            document.getElementById('contactEmail').value = '';
+            document.getElementById('contactSubject').value = '';
+            document.getElementById('contactMessage').value = '';
+          })
+          .catch(error => {
+            console.error('Error submitting contact form:', error);
+            alert('Failed to send message: ' + error.message);
+          });
+      });
+    });
+  </script>
+</body>
+</html>

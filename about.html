@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Dream Chocolates</title>
+  <link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body { 
+      background-color: #FFF8F0;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    .charcoal-black { color: #1C2526; }
+    .baby-pink { background-color: #F9E4E8; }
+    .brown { color: #4B2E2A; }
+    .golden { color: #D4A017; }
+    .font-playfair { font-family: 'Playfair Display', serif; }
+    .font-montserrat { font-family: 'Montserrat', sans-serif; }
+    .font-poppins { font-family: 'Poppins', sans-serif; }
+    .section-card {
+      background: rgba(255, 248, 240, 0.95);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    .section-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .icon-circle {
+      width: 60px;
+      height: 60px;
+      background: #F9E4E8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      transition: background 0.5s ease, transform 0.5s ease;
+    }
+    .icon-circle:hover {
+      background: #D4A017;
+      transform: scale(1.2) rotate(15deg);
+    }
+    .team-member {
+      background: #FFF8F0;
+      border: 1px solid rgba(212, 160, 23, 0.3);
+      border-radius: 10px;
+      padding: 1rem;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    .team-member:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .process-step {
+      background: #FFF8F0;
+      border: 1px solid rgba(212, 160, 23, 0.3);
+      border-radius: 10px;
+      padding: 1rem;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    .process-step:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .fun-fact {
+      background: #F9E4E8;
+      border-radius: 10px;
+      padding: 1rem;
+      transition: transform 0.5s ease, background 0.5s ease;
+    }
+    .fun-fact:hover {
+      transform: scale(1.05);
+      background: #D4A017;
+      color: #FFF8F0;
+    }
+    .action-button {
+      background: #F9E4E8;
+      color: #1C2526;
+      transition: background 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    .action-button:hover {
+      background: #D4A017;
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(212, 160, 23, 0.5);
+    }
+    .brand-name {
+      position: relative;
+      display: inline-block;
+      transition: all 0.7s ease;
+    }
+    .brand-name:hover {
+      color: #D4A017;
+      transform: scale(1.15) rotate(3deg);
+      text-shadow: 0 0 20px rgba(212, 160, 23, 0.8), 0 0 30px rgba(212, 160, 23, 0.6);
+    }
+    .brand-name::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #D4A017;
+      transition: width 0.5s ease;
+    }
+    .brand-name:hover::after {
+      width: 100%;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@400;600&family=Poppins:wght@700&display=swap" rel="stylesheet">
+</head>
+<body class="font-montserrat text-charcoal-black">
+  <!-- Main Navbar -->
+  <nav class="bg-opacity-90 text-ivory-white p-3 sticky top-0 z-20" style="background: rgba(255, 248, 240, 0.95); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);">
+    <div class="container mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <h1 class="text-2xl font-bold font-poppins brand-name"><a href="index.html">Dream Chocolates</a></h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="/cart" class="text-charcoal-black hover:text-golden">
+          <i class="fas fa-shopping-cart text-xl"></i>
+          <span id="cartCount" class="ml-1 text-sm font-bold">0</span>
+        </a>
+        <a href="index.html" class="text-charcoal-black hover:text-golden">Home</a>
+        <a href="my-account.html" class="text-charcoal-black hover:text-golden">My Account</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Introduction Section -->
+  <section class="py-16 bg-ivory-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-4xl font-playfair text-charcoal-black mb-6 transition-all duration-700 hover:text-golden">About Dream Chocolates</h2>
+      <p class="text-lg text-charcoal-black max-w-3xl mx-auto mb-8">At Dream Chocolates, we believe in creating moments of joy through the finest handcrafted chocolates. Every piece is a labor of love, blending premium ingredients with passion and creativity to bring you a taste of heaven.</p>
+      <div class="icon-circle">
+        <i class="fas fa-heart text-2xl text-brown"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Story Section -->
+  <section class="py-16 bg-baby-pink">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-playfair text-charcoal-black mb-12 text-center transition-all duration-700 hover:text-golden">Our Story</h2>
+      <div class="section-card">
+        <p class="text-charcoal-black mb-4">Dream Chocolates was founded in 2018 by a group of chocolate enthusiasts who wanted to share their love for exceptional sweets with the world. What started as a small kitchen experiment in a cozy home in Bangalore has grown into a beloved brand known for its quality and innovation.</p>
+        <p class="text-charcoal-black mb-4">Our mission is simple: to craft chocolates that not only taste divine but also tell a story of tradition, creativity, and care. Over the years, we've expanded our offerings to include a wide range of collections, from classic truffles to exotic fruit fusions, all while staying true to our roots.</p>
+        <p class="text-charcoal-black">Today, Dream Chocolates is a symbol of luxury and delight, bringing smiles to chocolate lovers across India and beyond. We’re proud to be a part of your celebrations, quiet moments, and everything in between.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Values Section -->
+  <section class="py-16 bg-ivory-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-playfair text-charcoal-black mb-12 text-center transition-all duration-700 hover:text-golden">Our Values</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="section-card text-center">
+          <div class="icon-circle">
+            <i class="fas fa-star text-2xl text-brown"></i>
+          </div>
+          <h3 class="text-xl font-playfair text-brown mb-2">Quality First</h3>
+          <p class="text-charcoal-black">We use only the finest ingredients, sourced ethically from around the world, to ensure every bite is perfection.</p>
+        </div>
+        <div class="section-card text-center">
+          <div class="icon-circle">
+            <i class="fas fa-leaf text-2xl text-brown"></i>
+          </div>
+          <h3 class="text-xl font-playfair text-brown mb-2">Sustainability</h3>
+          <p class="text-charcoal-black">Our packaging is eco-friendly, and we partner with sustainable farms to reduce our environmental footprint.</p>
+        </div>
+        <div class="section-card text-center">
+          <div class="icon-circle">
+            <i class="fas fa-smile text-2xl text-brown"></i>
+          </div>
+          <h3 class="text-xl font-playfair text-brown mb-2">Customer Joy</h3>
+          <p class="text-charcoal-black">Your satisfaction is our priority. We’re here to make every experience with us delightful.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Meet the Team Section -->
+  <section class="py-16 bg-baby-pink">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-playfair text-charcoal-black mb-12 text-center transition-all duration-700 hover:text-golden">Meet Team Dream</h2>
+      <p class="text-lg text-charcoal-black text-center mb-8">Made with Love by Team Dream – a group of passionate individuals dedicated to bringing you the best chocolates.</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="team-member text-center">
+          <div class="icon-circle">
+            <i class="fas fa-user text-2xl text-brown"></i>
+          </div>
+          <h3 class="text-xl font-playfair text-brown mb-2">Aisha Sharma</h3>
+          <p class="text-sm text-charcoal-black font-bold mb-2">Founder & Head Chocolatier</p>
+          <p class="text-charcoal-black text-sm">Aisha’s love for chocolate began in her grandmother’s kitchen. With a degree in culinary arts, she founded Dream Chocolates to share her creations with the world.</p>
+        </div>
+        <div class="team-member text-center">
+          <div class="icon-circle">
+            <i class="fas fa-user text-2xl text-brown"></i>
+          </div>
+          <h3 class="text-xl font-playfair text-brown mb-2">Rahul Mehra</h3>
+          <p class="text-sm text-charcoal-black font-bold mb-2">Creative Director</p>
+          <p class="text-charcoal-black text-sm">Rahul designs the stunning packaging that makes every box a gift. His creativity ensures our chocolates look as good as they taste.</p>
+        </div>
+        <div class="team-member text-center">
+          <div class="icon-circle">
+            <i class="fas fa-user text-2xl text-brown"></i>
+          </div>
+          <h3 class="text-xl font-playfair text-brown mb-2">Priya Nair</h3>
+          <p class="text-sm text-charcoal-black font-bold mb-2">Operations Manager</p>
+          <p class="text-charcoal-black text-sm">Priya ensures every order is delivered with care and precision. Her dedication keeps our operations smooth and efficient.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Process Section -->
+  <section class="py-16 bg-ivory-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-playfair text-charcoal-black mb-12 text-center transition-all duration-700 hover:text-golden">Our Process</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div class="process-step text-center">
+          <div class="icon-circle">
+            <i class="fas fa-globe text-2xl text-brown"></i>
+          </div>
+          <h3 class="text-xl font-playfair text-brown mb-2">Sourcing</h3>
+          <p class="text-charcoal-black text-sm">We source the finest cocoa beans from sustainable farms in Africa and South America, ensuring ethical practices.</p>
+        </div>
+        <div class="process-step text-center">
+          <div class="icon-circle">
+            <i class="fas fa-mortar-pestle text-2xl text-brown"></i>
+          </div>
+          <h3 class="text-xl font-playfair text-brown mb-2">Crafting</h3>
+          <p class="text-charcoal-black text-sm">Our chocolatiers handcraft each piece, blending cocoa with fresh ingredients like nuts, fruits, and spices.</p>
+        </div>
+        <div class="process-step text-center">
+          <div class="icon-circle">
+            <i class="fas fa-box text-2xl text-brown"></i>
+          </div>
+          <h3 class="text-xl font-playfair text-brown mb-2">Packaging</h3>
+          <p class="text-charcoal-black text-sm">Every box is designed with elegance, using eco-friendly materials to make your gift extra special.</p>
+        </div>
+        <div class="process-step text-center">
+          <div class="icon-circle">
+            <i class="fas fa-truck text-2xl text-brown"></i>
+          </div>
+          <h3 class="text-xl font-playfair text-brown mb-2">Delivery</h3>
+          <p class="text-charcoal-black text-sm">We deliver your chocolates swiftly and securely, ensuring they arrive fresh and ready to enjoy.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fun Facts Section -->
+  <section class="py-16 bg-baby-pink">
+    <div class="container mx-auto px-4">
+      <h2 class="text-4xl font-playfair text-charcoal-black mb-12 text-center transition-all duration-700 hover:text-golden">Fun Facts</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="fun-fact text-center">
+          <p class="text-charcoal-black">We’ve crafted over <span class="font-bold">50,000</span> chocolates since our founding in 2018!</p>
+        </div>
+        <div class="fun-fact text-center">
+          <p class="text-charcoal-black">Our best-selling Truffle Delights use cocoa beans sourced from <span class="font-bold">Ghana</span>.</p>
+        </div>
+        <div class="fun-fact text-center">
+          <p class="text-charcoal-black">Chocolate can improve your mood – it contains <span class="font-bold">serotonin</span>!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Information Section -->
+  <section class="py-16 bg-ivory-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-4xl font-playfair text-charcoal-black mb-12 transition-all duration-700 hover:text-golden">Get in Touch</h2>
+      <div class="section-card">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+          <div class="text-center">
+            <div class="icon-circle">
+              <i class="fas fa-map-marker-alt text-2xl text-brown"></i>
+            </div>
+            <p class="text-charcoal-black">123 Sweet Lane, Bangalore, Karnataka, India</p>
+          </div>
+          <div class="text-center">
+            <div class="icon-circle">
+              <i class="fas fa-phone text-2xl text-brown"></i>
+            </div>
+            <p class="text-charcoal-black">+91 98765 43210</p>
+          </div>
+          <div class="text-center">
+            <div class="icon-circle">
+              <i class="fas fa-envelope text-2xl text-brown"></i>
+            </div>
+            <p class="text-charcoal-black">support@dreamchocolates.in</p>
+          </div>
+        </div>
+        <div class="flex justify-center space-x-6">
+          <a href="#" class="text-2xl hover:text-golden transition-all duration-300"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="text-2xl hover:text-golden transition-all duration-300"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="text-2xl hover:text-golden transition-all duration-300"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="text-2xl hover:text-golden transition-all duration-300"><i class="fab fa-pinterest"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="py-16 bg-baby-pink text-center">
+    <h2 class="text-4xl font-playfair text-charcoal-black mb-6 transition-all duration-700 hover:text-golden">Ready to Taste the Magic?</h2>
+    <p class="text-lg text-charcoal-black mb-8">Explore our collections or reach out to us for a custom order!</p>
+    <a href="/catalog" class="action-button px-6 py-3 rounded-full inline-block mr-4">Shop Now</a>
+    <a href="/contact" class="action-button px-6 py-3 rounded-full inline-block">Contact Us</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gradient-to-b from-charcoal-black to-brown py-12 text-center text-ivory-white">
+    <div class="container mx-auto">
+      <h3 class="text-3xl font-playfair mb-6">Dream Chocolates</h3>
+      <ul class="flex justify-center space-x-8 mb-6">
+        <li><a href="index.html" class="text-lg hover:text-golden transition-all duration-300">Home</a></li>
+        <li><a href="about.html" class="text-lg hover:text-golden transition-all duration-300">About</a></li>
+        <li><a href="/contact" class="text-lg hover:text-golden transition-all duration-300">Contact</a></li>
+        <li><a href="/privacy" class="text-lg hover:text-golden transition-all duration-300">Privacy Policy</a></li>
+      </ul>
+      <div class="flex justify-center space-x-6 mb-6">
+        <a href="#" class="text-2xl hover:text-golden transition-all duration-300"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="text-2xl hover:text-golden transition-all duration-300"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="text-2xl hover:text-golden transition-all duration-300"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="text-2xl hover:text-golden transition-all duration-300"><i class="fab fa-pinterest"></i></a>
+      </div>
+      <p class="text-sm">© 2025 Dream Chocolates. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const firebaseConfig = {
+        apiKey: "AIzaSyB2WLz-OT-oqaY1-e4Kz-2YxqhtKIrfxcM",
+        authDomain: "dream-chocolates.firebaseapp.com",
+        projectId: "dream-chocolates",
+        storageBucket: "dream-chocolates.firebasestorage.app",
+        messagingSenderId: "617411233819",
+        appId: "1:617411233819:web:42f5749a653ff0b2f710be",
+        measurementId: "G-L0MZDVJT2G"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      // Load cart count from Firestore
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          const userRef = db.collection('users').doc(user.uid);
+          userRef.get().then(doc => {
+            if (doc.exists) {
+              const data = doc.data();
+              const cartItems = data.cartItems || [];
+              document.getElementById('cartCount').textContent = cartItems.length;
+            }
+          }).catch(error => {
+            console.error('Error fetching user data:', error);
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
